@@ -77,15 +77,19 @@ const handleError = () => {
 @use '@/styles/globals';
 
 main {
+  padding: 10px;
   display: grid;
+  gap: 5px;
   grid-template-columns: 1fr;
   justify-items: center;
+  background-color: grey;
 }
 
 header {
   font-size: 24px;
-  margin-bottom: 24px;
   color: red;
+  border: 1px solid black;
+  padding: 10px;
 }
 
 .load-more {
