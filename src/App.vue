@@ -25,17 +25,19 @@ onBeforeMount(() => {
 })
 const loadMore = () => {
   state.value = 'loading'
-  fetchCollection({ resultsPerPage: RESULTS_PER_PAGE, page: ++page.value, searchQuery: searchQuery.value }).then(
-    ({ artObjects: as }) => {
-      collection.value.push(...as)
-      state.value = 'loaded'
-    },
-  )
+  fetchCollection({
+    resultsPerPage: RESULTS_PER_PAGE,
+    page: ++page.value,
+    searchQuery: searchQuery.value,
+  }).then(({ artObjects: as }) => {
+    collection.value.push(...as)
+    state.value = 'loaded'
+  })
 }
 
-const performSearch = (query => searchQuery.value = query)
+const performSearch = (query) => (searchQuery.value = query)
 
-watch(searchQuery, newSearch => {
+watch(searchQuery, (newSearch) => {
   state.value = 'loading'
   fetchCollection({ resultsPerPage: RESULTS_PER_PAGE, page: 1, searchQuery: newSearch }).then(
     ({ count: c, artObjects: as }) => {
@@ -48,11 +50,16 @@ watch(searchQuery, newSearch => {
 </script>
 
 <template>
-  <header>Hello there</header>
+  <header>Rijks Museum</header>
   <main>
     <Search class="search" @search="performSearch" :disabled="isLoading" />
     <Grid :items="collection" />
-    <button class="load-more" v-if="collection.length < count" :disabled="isLoading" @click="loadMore">
+    <button
+      class="load-more"
+      v-if="collection.length < count"
+      :disabled="isLoading"
+      @click="loadMore"
+    >
       {{ isLoading ? 'Loading...' : 'Load more' }}
     </button>
   </main>
@@ -60,7 +67,6 @@ watch(searchQuery, newSearch => {
 
 <style lang="scss">
 @use '@/styles/globals';
-@use 'sass:map';
 
 main {
   display: grid;
@@ -69,7 +75,8 @@ main {
 }
 
 header {
-  font-size: 80px;
+  font-size: 24px;
+  margin-bottom: 24px;
   color: red;
 }
 
@@ -83,9 +90,7 @@ header {
   width: 100%;
 }
 
-$desktopConfig: map.get(globals.$breakpoints, 'desktop');
-
-@media (min-width: map.get($desktopConfig, 'minWidth')) {
+@include globals.respond-to('desktop') {
   .load-more {
     width: 240px;
   }

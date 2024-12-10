@@ -1,14 +1,39 @@
 $breakpoints: (
   'phone': (
-    'minWidth': 480px,
+    'max': 767px,
     'numberOfColumns': 2,
   ),
   'tablet': (
-    'minWidth': 768px,
+    'min': 768px,
+    'max': 1024px,
     'numberOfColumns': 4,
   ),
   'desktop': (
-    'minWidth': 1200px,
+    'min': 1025px,
     'numberOfColumns': 5,
   ),
 );
+
+@mixin respond-to($devices...) {
+  @each $device in $devices {
+    @if map-has-key($breakpoints, $device) {
+      $breakpoint: map-get($breakpoints, $device);
+
+      @if map-has-key($breakpoint, 'min') and map-has-key($breakpoint, 'max') {
+        @media (min-width: #{map-get($breakpoint, 'min')}) and (max-width: #{map-get($breakpoint, 'max')}) {
+          @content;
+        }
+      } @else if map-has-key($breakpoint, 'min') {
+        @media (min-width: #{map-get($breakpoint, 'min')}) {
+          @content;
+        }
+      } @else if map-has-key($breakpoint, 'max') {
+        @media (max-width: #{map-get($breakpoint, 'max')}) {
+          @content;
+        }
+      }
+    } @else {
+      @warn "No breakpoint found for '#{$device}'";
+    }
+  }
+}

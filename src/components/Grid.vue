@@ -24,8 +24,8 @@ $root: '.grid';
   justify-items: center;
 }
 
-@each $bp, $config in globals.$breakpoints {
-  @media (min-width: map.get($config, 'minWidth')) {
+@each $deviceType, $config in globals.$breakpoints {
+  @include globals.respond-to($deviceType) {
     #{$root} {
       grid-template-columns: repeat(map.get($config, 'numberOfColumns'), 1fr);
     }

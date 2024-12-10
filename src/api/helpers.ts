@@ -1,7 +1,16 @@
 import { PARAMS_CONFIG } from './constants'
-import type { CollectionRequestConfig, AllowedParams, ParamsConfig, ApiResponse, ArtObject } from './types'
+import type {
+  CollectionRequestConfig,
+  AllowedParams,
+  ParamsConfig,
+  ApiResponse,
+  ArtObject,
+} from './types'
 
-const pipe = (...fns: Function[]) => (input: unknown) => fns.reduce((result, fn) => fn(result), input)
+const pipe =
+  (...fns: Function[]) =>
+  (input: unknown) =>
+    fns.reduce((result, fn) => fn(result), input)
 
 export const attachSearchParams = (url: string, params: CollectionRequestConfig = {}): URL =>
   (Object.entries(PARAMS_CONFIG) as [AllowedParams, ParamsConfig[AllowedParams]][]).reduce(
@@ -15,25 +24,21 @@ export const attachSearchParams = (url: string, params: CollectionRequestConfig 
     new URL(url),
   )
 
-const assignDefaultImageIfNull = (artObject: ArtObject):ArtObject => {
+const assignDefaultImageIfNull = (artObject: ArtObject): ArtObject => {
   if (artObject.webImage !== null) return artObject
   return {
     ...artObject,
-    webImage: { url: 'https://placehold.co/400x400?text=No+photo' }
+    webImage: { url: 'https://placehold.co/400x400?text=No+photo' },
   }
 }
 const fixPicturelessItems = ({ artObjects, ...rest }: ApiResponse): ApiResponse => ({
   ...rest,
-  artObjects: artObjects.map(assignDefaultImageIfNull)
+  artObjects: artObjects.map(assignDefaultImageIfNull),
 })
 
 const removeUnnecessaryFields = ({ artObjects, count }: ApiResponse): ApiResponse => ({
   count,
-  artObjects: artObjects.map(({ id, webImage, title }) => ({ id, webImage, title }))
+  artObjects: artObjects.map(({ id, webImage, title }) => ({ id, webImage, title })),
 })
 
-export const cleanupResults = pipe(
-  removeUnnecessaryFields,
-  fixPicturelessItems,
-)
-
+export const cleanupResults = pipe(removeUnnecessaryFields, fixPicturelessItems)
