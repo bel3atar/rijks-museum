@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue'
 import { fetchCollection } from '@/api'
+import Grid from './components/Grid.vue'
 
 const collection = ref([])
+const count = ref(0)
 
 onBeforeMount(() => {
-  fetchCollection().then((data) => (collection.value = data))
+  fetchCollection().then(({ count:c, artObjects:as}) => {collection.value =as; count.value = c})
 })
 </script>
 
 <template>
   <header>Hello there</header>
   <main>
-    {{ collection }}
+    <Grid :items="collection" />
   </main>
 </template>
 

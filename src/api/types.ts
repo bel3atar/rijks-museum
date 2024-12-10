@@ -1,5 +1,6 @@
 export type ArtObject = {
   id: string
+  title: string
   webImage: { url: string }
 }
 export type ApiResponse = {
