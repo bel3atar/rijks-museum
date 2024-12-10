@@ -13,15 +13,16 @@ const state = ref<'loading' | 'loaded' | 'error'>('loading')
 const searchQuery = ref<string | undefined>(undefined)
 
 const isLoading = computed(() => state.value === 'loading')
+const isError = computed(() => state.value === 'error')
 
 onBeforeMount(() => {
-  fetchCollection({ resultsPerPage: RESULTS_PER_PAGE, page: page.value }).then(
-    ({ count: c, artObjects: as }) => {
+  fetchCollection({ resultsPerPage: RESULTS_PER_PAGE, page: page.value })
+    .then(({ count: c, artObjects: as }) => {
       collection.value = as
       count.value = c
       state.value = 'loaded'
-    },
-  )
+    })
+    .catch(handleError)
 })
 const loadMore = () => {
   state.value = 'loading'
@@ -29,29 +30,36 @@ const loadMore = () => {
     resultsPerPage: RESULTS_PER_PAGE,
     page: ++page.value,
     searchQuery: searchQuery.value,
-  }).then(({ artObjects: as }) => {
-    collection.value.push(...as)
-    state.value = 'loaded'
   })
+    .then(({ artObjects: as }) => {
+      collection.value.push(...as)
+      state.value = 'loaded'
+    })
+    .catch(handleError)
 }
 
 const performSearch = (query) => (searchQuery.value = query)
 
 watch(searchQuery, (newSearch) => {
   state.value = 'loading'
-  fetchCollection({ resultsPerPage: RESULTS_PER_PAGE, page: 1, searchQuery: newSearch }).then(
-    ({ count: c, artObjects: as }) => {
+  fetchCollection({ resultsPerPage: RESULTS_PER_PAGE, page: 1, searchQuery: newSearch })
+    .then(({ count: c, artObjects: as }) => {
       collection.value = as
       count.value = c
       state.value = 'loaded'
-    },
-  )
+    })
+    .catch(handleError)
 })
+
+const handleError = () => {
+  state.value = 'error'
+}
 </script>
 
 <template>
   <header>Rijks Museum</header>
-  <main>
+  <div v-if="isError">An error has occured, please refresh</div>
+  <main v-else>
     <Search class="search" @search="performSearch" :disabled="isLoading" />
     <Grid :items="collection" />
     <button

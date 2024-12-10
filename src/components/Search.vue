@@ -7,7 +7,7 @@ const emit = defineEmits<{
 }>()
 
 const search = () => {
-  if (!props.isLoading) emit('search', inputValue.value)
+  if (!props.disabled) emit('search', inputValue.value)
 }
 </script>
 

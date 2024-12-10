@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 $breakpoints: (
   'phone': (
     'max': 767px,
@@ -16,19 +18,19 @@ $breakpoints: (
 
 @mixin respond-to($devices...) {
   @each $device in $devices {
-    @if map-has-key($breakpoints, $device) {
-      $breakpoint: map-get($breakpoints, $device);
+    @if map.has-key($breakpoints, $device) {
+      $breakpoint: map.get($breakpoints, $device);
 
-      @if map-has-key($breakpoint, 'min') and map-has-key($breakpoint, 'max') {
-        @media (min-width: #{map-get($breakpoint, 'min')}) and (max-width: #{map-get($breakpoint, 'max')}) {
+      @if map.has-key($breakpoint, 'min') and map.has-key($breakpoint, 'max') {
+        @media (min-width: #{map.get($breakpoint, 'min')}) and (max-width: #{map.get($breakpoint, 'max')}) {
           @content;
         }
-      } @else if map-has-key($breakpoint, 'min') {
-        @media (min-width: #{map-get($breakpoint, 'min')}) {
+      } @else if map.has-key($breakpoint, 'min') {
+        @media (min-width: #{map.get($breakpoint, 'min')}) {
           @content;
         }
-      } @else if map-has-key($breakpoint, 'max') {
-        @media (max-width: #{map-get($breakpoint, 'max')}) {
+      } @else if map.has-key($breakpoint, 'max') {
+        @media (max-width: #{map.get($breakpoint, 'max')}) {
           @content;
         }
       }
