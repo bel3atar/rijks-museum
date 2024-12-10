@@ -30,6 +30,8 @@ $root: '.grid-item';
   &__title {
     display: none;
     color: white;
+    background-color: black;
+    margin-bottom: 0;
     position: absolute;
     width: 100%;
     left: 50%;
@@ -38,6 +40,8 @@ $root: '.grid-item';
     text-align: center;
     line-clamp: 3;
     -webkit-line-clamp: 3;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 </style>
