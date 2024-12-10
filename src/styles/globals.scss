@@ -1,0 +1,14 @@
+$breakpoints: (
+  'phone': (
+    'minWidth': 480px,
+    'numberOfColumns': 2,
+  ),
+  'tablet': (
+    'minWidth': 768px,
+    'numberOfColumns': 3,
+  ),
+  'desktop': (
+    'minWidth': 1200px,
+    'numberOfColumns': 4,
+  ),
+);

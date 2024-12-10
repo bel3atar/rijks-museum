@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import type { ArtObject } from '@/api/types'
 
-const props = withDefaults(
-  defineProps<ArtObject & { tag?: string }>(),
-  { tag: 'div' }
-)
+const props = withDefaults(defineProps<ArtObject & { tag?: string }>(), { tag: 'div' })
 </script>
 <template>
   <component :is="props.tag" class="grid-item">
@@ -14,7 +11,7 @@ const props = withDefaults(
 </template>
 
 <style lang="scss">
-$root: ".grid-item";
+$root: '.grid-item';
 
 #{$root} {
   &:hover {

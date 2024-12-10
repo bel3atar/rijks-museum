@@ -10,9 +10,10 @@ const props = defineProps<{ items: ArtObject[] }>()
   </ul>
 </template>
 <style lang="scss">
-@use "sass:map";
+@use 'sass:map';
+@use '@/styles/globals';
 
-$root : '.grid';
+$root: '.grid';
 
 #{$root} {
   display: grid;
@@ -23,15 +24,10 @@ $root : '.grid';
   justify-items: center;
 }
 
-$breakpoints : ("phone": ("minWidth": 480px, "numberOfColumns": 2),
-  "tablet": ("minWidth": 768px, "numberOfColumns": 3),
-  "desktop":("minWidth": 1200px, "numberOfColumns": 4),
-);
-
-@each $bp, $config in $breakpoints {
+@each $bp, $config in globals.$breakpoints {
   @media (min-width: map.get($config, 'minWidth')) {
     #{$root} {
-      grid-template-columns: repeat(map.get($config, 'numberOfColumns'), 1fr)
+      grid-template-columns: repeat(map.get($config, 'numberOfColumns'), 1fr);
     }
   }
 }
